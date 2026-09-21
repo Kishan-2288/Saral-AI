@@ -13,6 +13,7 @@ from app.api.routes import (
     booking,
     admin,
     receptionist,
+    staff,
 )
 
 api_router = APIRouter()
@@ -52,13 +53,39 @@ api_router.include_router(
 
 
 # ============================================================
-# Hospitals / Enterprises
+# Hospitals
 # ============================================================
 
 api_router.include_router(
     hospitals.router,
     prefix="/hospitals",
     tags=["Hospitals"],
+)
+
+
+# ============================================================
+# Enterprises
+#
+# The admin frontend uses /enterprises.
+# The existing hospitals router provides the
+# enterprise functionality.
+# ============================================================
+
+api_router.include_router(
+    hospitals.router,
+    prefix="/enterprises",
+    tags=["Enterprises"],
+)
+
+
+# ============================================================
+# Staff
+# ============================================================
+
+api_router.include_router(
+    staff.router,
+    prefix="/staff",
+    tags=["Staff"],
 )
 
 
