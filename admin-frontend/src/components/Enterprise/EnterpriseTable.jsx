@@ -1,0 +1,5 @@
+import { Link } from '../../routes/router';
+import { StatusBadge } from '../Common/StatusBadge';
+import { formatDate } from '../../utils/formatters';
+
+export function EnterpriseTable({ enterprises, onDelete }) { return <section className="panel table-wrap"><table><thead><tr><th>Enterprise</th><th>Business type</th><th>Staff</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead><tbody>{enterprises.map((enterprise) => <tr key={enterprise.id}><td><strong>{enterprise.name}</strong><small>{enterprise.email || enterprise.phone || 'No contact added'}</small></td><td>{enterprise.business_type || '—'}</td><td>{enterprise.staff_count ?? 0}</td><td><StatusBadge active={enterprise.is_active} /></td><td>{formatDate(enterprise.created_at)}</td><td><div className="table-actions"><Link className="table-link" to={`/enterprises/${enterprise.id}`}>View</Link><button type="button" className="delete-btn" onClick={() => onDelete(enterprise.id)}>Delete</button></div></td></tr>)}</tbody></table></section>; }

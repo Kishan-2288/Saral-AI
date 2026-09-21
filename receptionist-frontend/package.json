@@ -1,0 +1,9 @@
+{
+  "name": "saral-receptionist-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vite build", "lint": "tsc --noEmit" },
+  "dependencies": { "@vitejs/plugin-react": "^5.0.0", "vite": "^6.2.3", "typescript": "~5.8.2", "react": "^19.0.0", "react-dom": "^19.0.0" },
+  "devDependencies": {}
+}

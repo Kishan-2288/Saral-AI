@@ -1,0 +1,30 @@
+:root {
+  background: #000;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; background: #000; }
+
+body { overflow-x: hidden; }
+
+#scroll-track { height: 1200vh; }
+
+#stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+#animation {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #scroll-track { height: 100vh; }
+}

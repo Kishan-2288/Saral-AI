@@ -1,0 +1,1 @@
+export function Modal({ title, children, onClose }) { return <div className="modal-backdrop" role="presentation" onMouseDown={onClose}><section className="modal" onMouseDown={(event) => event.stopPropagation()}><div className="modal-heading"><h2>{title}</h2><button aria-label="Close" onClick={onClose}>×</button></div>{children}</section></div>; }

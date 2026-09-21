@@ -1,0 +1,2 @@
+import { useAuth } from '../hooks/useAuth';
+export default function Settings() { const { user } = useAuth(); return <><p className="eyebrow">WORKSPACE</p><h1>Settings</h1><p className="subtitle">Your administrator profile and console preferences.</p><section className="panel settings-panel"><h2>Administrator profile</h2><dl><dt>Name</dt><dd>{user?.full_name || '—'}</dd><dt>Email</dt><dd>{user?.email}</dd><dt>Role</dt><dd>{user?.role}</dd></dl></section></>; }
