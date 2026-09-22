@@ -24,7 +24,7 @@ router = APIRouter()
 @router.get("/")
 def list_enterprises(
     db: Session = Depends(get_db),
-    _=Depends(require_role("admin"))
+    _=Depends(require_role("admin")),
 ):
     hospitals = db.scalars(
         select(Hospital)
@@ -33,25 +33,25 @@ def list_enterprises(
 
     result = []
 
-    for h in hospitals:
+    for hospital in hospitals:
 
         staff_count = db.scalar(
             select(func.count())
             .select_from(Staff)
             .where(
-                Staff.hospital_id == h.id
+                Staff.hospital_id == hospital.id
             )
         ) or 0
 
         result.append({
-            "id": str(h.id),
-            "name": h.name,
-            "phone": h.phone,
-            "email": h.email,
-            "address": h.address,
-            "status": h.status,
-            "is_active": h.status == "active",
-            "created_at": h.created_at,
+            "id": str(hospital.id),
+            "name": hospital.name,
+            "phone": hospital.phone,
+            "email": hospital.email,
+            "address": hospital.address,
+            "status": hospital.status,
+            "is_active": hospital.status == "active",
+            "created_at": hospital.created_at,
             "staff_count": staff_count,
         })
 
@@ -66,7 +66,7 @@ def list_enterprises(
 def create_enterprise(
     payload: EnterpriseCreate,
     db: Session = Depends(get_db),
-    _=Depends(require_role("admin"))
+    _=Depends(require_role("admin")),
 ):
     # --------------------------------------------------------
     # Check duplicate hospital email
@@ -83,7 +83,7 @@ def create_enterprise(
         if existing:
             raise HTTPException(
                 status_code=409,
-                detail="An enterprise with this email already exists"
+                detail="An enterprise with this email already exists",
             )
 
     # --------------------------------------------------------
@@ -100,7 +100,7 @@ def create_enterprise(
 
     db.add(hospital)
 
-    # Generate hospital UUID before creating receptionist
+    # Generate hospital UUID
     db.flush()
 
     # --------------------------------------------------------
@@ -113,7 +113,6 @@ def create_enterprise(
         and payload.temporary_password
     ):
 
-        # Check duplicate staff email
         existing_staff = db.scalar(
             select(Staff).where(
                 Staff.email == payload.receptionist_email
@@ -123,32 +122,26 @@ def create_enterprise(
         if existing_staff:
             raise HTTPException(
                 status_code=409,
-                detail="A staff account already uses this email"
+                detail="A staff account already uses this email",
             )
 
-        # Create receptionist
+        # IMPORTANT:
+        # Staff table uses `name`, NOT `full_name`
         staff = Staff(
             hospital_id=hospital.id,
-
-            full_name=payload.receptionist_name,
-
+            name=payload.receptionist_name,
             email=payload.receptionist_email,
-
             role="receptionist",
-
             password_hash=hash_password(
                 payload.temporary_password
             ),
-
             is_active=True,
-
-            # Receptionist must verify email before login
             email_verified=False,
         )
 
         db.add(staff)
 
-        # Generate receptionist UUID
+        # Generate staff UUID
         db.flush()
 
         # ----------------------------------------------------
@@ -160,20 +153,16 @@ def create_enterprise(
             user_id=staff.id,
             user_type="staff",
             email=staff.email,
-            name=staff.full_name,
+            name=staff.name,
         )
 
     # --------------------------------------------------------
-    # Commit everything
+    # Commit
     # --------------------------------------------------------
 
     db.commit()
 
     db.refresh(hospital)
-
-    # --------------------------------------------------------
-    # Response
-    # --------------------------------------------------------
 
     return {
         "id": str(hospital.id),
@@ -195,21 +184,18 @@ def update_enterprise(
     hospital_id: str,
     payload: EnterpriseUpdate,
     db: Session = Depends(get_db),
-    _=Depends(require_role("admin"))
+    _=Depends(require_role("admin")),
 ):
     # --------------------------------------------------------
     # Get enterprise
     # --------------------------------------------------------
 
-    hospital = db.get(
-        Hospital,
-        hospital_id
-    )
+    hospital = db.get(Hospital, hospital_id)
 
     if not hospital:
         raise HTTPException(
             status_code=404,
-            detail="Enterprise not found"
+            detail="Enterprise not found",
         )
 
     # --------------------------------------------------------
@@ -228,22 +214,14 @@ def update_enterprise(
 
         is_active = data["is_active"]
 
-        # ----------------------------------------------------
-        # Active / Inactive status
-        # ----------------------------------------------------
-
         hospital.status = (
             "active"
             if is_active
             else "inactive"
         )
 
-        # ----------------------------------------------------
-        # IMPORTANT:
         # If enterprise becomes inactive,
-        # deactivate ALL staff belonging to it.
-        # ----------------------------------------------------
-
+        # deactivate all staff belonging to it.
         if not is_active:
 
             db.query(Staff).filter(
@@ -252,7 +230,7 @@ def update_enterprise(
                 {
                     Staff.is_active: False
                 },
-                synchronize_session=False
+                synchronize_session=False,
             )
 
     # ========================================================
@@ -261,41 +239,37 @@ def update_enterprise(
 
     for key, value in data.items():
 
-        # ----------------------------------------------------
-        # is_active is already handled above
-        # ----------------------------------------------------
-
         if key == "is_active":
             continue
 
-        # ----------------------------------------------------
         # business_type does not exist in current DB
-        # ----------------------------------------------------
-
         if key == "business_type":
             continue
 
-        # ----------------------------------------------------
-        # Normal enterprise fields
-        # ----------------------------------------------------
-
-        setattr(
-            hospital,
-            key,
-            value
-        )
+        # Only allow fields that actually exist
+        # on the Hospital model.
+        if key in {
+            "name",
+            "phone",
+            "email",
+            "address",
+            "razorpay_account_id",
+            "status",
+            "wa_phone_number_id",
+        }:
+            setattr(
+                hospital,
+                key,
+                value,
+            )
 
     # --------------------------------------------------------
-    # Commit enterprise + staff changes together
+    # Commit
     # --------------------------------------------------------
 
     db.commit()
 
     db.refresh(hospital)
-
-    # --------------------------------------------------------
-    # Response
-    # --------------------------------------------------------
 
     return {
         "id": str(hospital.id),
@@ -316,7 +290,7 @@ def update_enterprise(
 def enterprise_detail(
     hospital_id: str,
     db: Session = Depends(get_db),
-    _=Depends(require_role("admin"))
+    _=Depends(require_role("admin")),
 ):
     # --------------------------------------------------------
     # Get hospital
@@ -330,7 +304,7 @@ def enterprise_detail(
     if not hospital:
         raise HTTPException(
             status_code=404,
-            detail="Enterprise not found"
+            detail="Enterprise not found",
         )
 
     # --------------------------------------------------------
@@ -340,7 +314,7 @@ def enterprise_detail(
     staff = db.scalars(
         select(Staff)
         .where(
-            Staff.hospital_id == hospital_id
+            Staff.hospital_id == hospital.id
         )
         .order_by(
             Staff.created_at.desc()
@@ -350,10 +324,8 @@ def enterprise_detail(
     # --------------------------------------------------------
     # Patient count
     #
-    # patients table does NOT contain hospital_id.
-    #
-    # Patients are connected to hospitals through appointments.
-    # Therefore count unique patients from appointments.
+    # patients table does not have hospital_id.
+    # Count unique patients through appointments.
     # --------------------------------------------------------
 
     patient_count = db.scalar(
@@ -366,8 +338,8 @@ def enterprise_detail(
         )
         .select_from(Appointment)
         .where(
-            Appointment.hospital_id == hospital_id,
-            Appointment.patient_id.is_not(None)
+            Appointment.hospital_id == hospital.id,
+            Appointment.patient_id.is_not(None),
         )
     ) or 0
 
@@ -381,7 +353,7 @@ def enterprise_detail(
         )
         .select_from(Appointment)
         .where(
-            Appointment.hospital_id == hospital_id
+            Appointment.hospital_id == hospital.id
         )
     ) or 0
 
@@ -412,22 +384,31 @@ def enterprise_detail(
 
         "staff": [
             {
-                "id": str(s.id),
+                "id": str(member.id),
 
-                "full_name": s.full_name,
+                # Actual DB/model field
+                "name": member.name,
 
-                "email": s.email,
+                # Keep this for compatibility with
+                # an older frontend if necessary.
+                "full_name": member.name,
 
-                "role": s.role,
+                "email": member.email,
 
-                "is_active": s.is_active,
+                "role": member.role,
 
-                "email_verified": s.email_verified,
+                "is_active": member.is_active,
+
+                "email_verified": member.email_verified,
             }
-            for s in staff
+            for member in staff
         ],
     }
 
+
+# ============================================================
+# DELETE ENTERPRISE
+# ============================================================
 
 @router.delete("/{hospital_id}")
 def delete_enterprise(
@@ -435,13 +416,21 @@ def delete_enterprise(
     db: Session = Depends(get_db),
     _=Depends(require_role("admin")),
 ):
-    hospital = db.get(Hospital, hospital_id)
+    hospital = db.get(
+        Hospital,
+        hospital_id
+    )
 
     if not hospital:
-        raise HTTPException(status_code=404, detail="Enterprise not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Enterprise not found",
+        )
 
     enterprise_name = hospital.name
+
     db.delete(hospital)
+
     db.commit()
 
     return {

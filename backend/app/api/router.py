@@ -14,6 +14,7 @@ from app.api.routes import (
     admin,
     receptionist,
     staff,
+    enterprises,
 )
 
 api_router = APIRouter()
@@ -65,14 +66,10 @@ api_router.include_router(
 
 # ============================================================
 # Enterprises
-#
-# The admin frontend uses /enterprises.
-# The existing hospitals router provides the
-# enterprise functionality.
 # ============================================================
 
 api_router.include_router(
-    hospitals.router,
+    enterprises.router,
     prefix="/enterprises",
     tags=["Enterprises"],
 )

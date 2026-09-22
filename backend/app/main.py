@@ -30,6 +30,7 @@ app.add_middleware(
         "https://www.saral.me",
         "https://admin.saral.me",
         "https://receptionist.saral.me",
+        "https://booking.saral.me",
     ],
     allow_credentials=True,
     allow_methods=["*"],

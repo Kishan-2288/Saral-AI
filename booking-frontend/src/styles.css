@@ -10,7 +10,7 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; background: #f7f7f7; }
-button, input { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button { cursor: pointer; }
 
 .app-shell { min-height: 100vh; }
@@ -57,6 +57,45 @@ button { cursor: pointer; }
 .alert { border-radius: 12px; padding: 13px 14px; font-size: 13px; line-height: 1.45; margin-top: 18px; }
 .alert.error { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
 
+/* Booking form */
+.form-section { margin-top: 34px; }
+.form-section-title { margin: 0; font-family: Sora, sans-serif; font-size: 22px; letter-spacing: -.7px; }
+.form-section-description { margin: 8px 0 22px; color: #64748b; font-size: 15px; line-height: 1.55; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.form-group { min-width: 0; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { display: block; margin-bottom: 8px; color: #334155; font-size: 14px; font-weight: 600; }
+.form-label > span { color: #e11d48; }
+.form-label > span:not(:first-child), .form-label span:not(:first-child) { color: #94a3b8; font-weight: 400; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; border: 1px solid #d9dee7; border-radius: 11px; background: #fff; color: #0f172a;
+  outline: none; transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+.form-input, .form-select { height: 46px; padding: 0 13px; }
+.form-select { appearance: auto; }
+.form-textarea { min-height: 96px; padding: 12px 13px; resize: vertical; }
+.form-input::placeholder, .form-textarea::placeholder { color: #94a3b8; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #050505; box-shadow: 0 0 0 3px rgba(5, 5, 5, .09); }
+.form-input:disabled, .form-select:disabled { cursor: not-allowed; background: #f5f6f8; color: #94a3b8; }
+.slot-section { margin-top: 24px; }
+.slot-header { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.slot-date-note { color: #64748b; font-size: 13px; }
+.slots { display: flex; flex-wrap: wrap; gap: 10px; }
+.slot-button { min-width: 104px; border: 1px solid #d9dee7; border-radius: 10px; background: #fff; color: #334155; padding: 11px 14px; font-size: 14px; font-weight: 600; transition: background-color .15s, border-color .15s, color .15s; }
+.slot-button:hover:not(:disabled) { border-color: #050505; }
+.slot-button.selected { border-color: #050505; background: #050505; color: #fff; }
+.slot-button:disabled { cursor: not-allowed; opacity: .45; }
+.no-slots { border: 1px dashed #d9dee7; border-radius: 12px; background: #fafafa; color: #64748b; padding: 15px; font-size: 14px; line-height: 1.5; }
+.booking-action { margin-top: 28px; }
+.booking-action .primary { margin-top: 0; }
+.payment-processing { display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 14px; color: #64748b; font-size: 13px; }
+.mini-spinner { width: 15px; height: 15px; border: 2px solid #d9dee7; border-top-color: #050505; border-radius: 50%; animation: spin .8s linear infinite; }
+.payment-doctor { display: flex; align-items: center; gap: 11px; margin-top: 22px; }
+.payment-avatar { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 12px; background: #050505; color: #fff; font-size: 13px; font-weight: 700; }
+.payment-doctor strong, .payment-doctor span { display: block; }
+.payment-doctor strong { font-size: 14px; }
+.payment-doctor span { margin-top: 2px; color: #64748b; font-size: 12px; }
+
 footer { text-align: center; color: #94a3b8; font-size: 12px; padding: 42px 0 10px; }
 .center-state { min-height: 100vh; width: min(700px, calc(100% - 40px)); margin: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 50px 0; }
 .center-state h2 { font-family: Sora, sans-serif; font-size: 28px; margin: 18px 0 10px; letter-spacing: -1px; }
@@ -84,4 +123,8 @@ footer { text-align: center; color: #94a3b8; font-size: 12px; padding: 42px 0 10
   .hero p { font-size: 16px; }
   .detail-grid, .success-card { grid-template-columns: 1fr; }
   .card-heading { flex-direction: column; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: auto; }
+  .slot-header { align-items: flex-start; flex-direction: column; gap: 0; }
+  .slot-button { flex: 1 1 calc(50% - 5px); min-width: 0; }
 }

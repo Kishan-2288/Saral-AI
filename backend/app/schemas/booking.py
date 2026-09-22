@@ -11,39 +11,26 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 class N8NBookingRequest(BaseModel):
     """
-    Data collected by n8n from the WhatsApp conversation.
+    Request sent by n8n when the patient asks to book
+    an appointment.
 
-    FastAPI validates all IDs against the database before
-    creating a booking link.
+    IMPORTANT:
+    n8n does NOT collect the appointment details.
+
+    n8n only identifies the hospital and the source
+    of the conversation.
+
+    The patient will select:
+    - Department
+    - Doctor
+    - Date
+    - Time slot
+    - Patient details
+
+    on the Saral Booking page.
     """
 
     hospital_id: UUID
-
-    phone: str = Field(
-        ...,
-        min_length=5,
-        max_length=50,
-    )
-
-    name: str = Field(
-        ...,
-        min_length=1,
-        max_length=200,
-    )
-
-    email: EmailStr | None = None
-
-    doctor_id: UUID
-    department_id: UUID
-    slot_id: UUID
-
-    appointment_date: date
-    appointment_time: time
-
-    reason_for_visit: str | None = Field(
-        default=None,
-        max_length=2000,
-    )
 
     source: str = Field(
         default="whatsapp",
@@ -54,10 +41,6 @@ class N8NBookingRequest(BaseModel):
 # ============================================================
 # Backward-compatible alias
 # ============================================================
-#
-# Some older code may use N8nBookingRequest instead of
-# N8NBookingRequest. Keep the alias so both names work.
-#
 
 N8nBookingRequest = N8NBookingRequest
 
@@ -81,7 +64,9 @@ class BookingPatientRead(BaseModel):
 
     reason_for_visit: str | None = None
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True
+    )
 
 
 # ============================================================
@@ -91,7 +76,7 @@ class BookingPatientRead(BaseModel):
 class ManualBookingLinkCreate(BaseModel):
     """
     Used by admin/receptionist/internal systems to create
-    a basic booking link manually.
+    a hospital-level booking link manually.
     """
 
     hospital_id: UUID
@@ -115,27 +100,27 @@ class BookingLinkResponse(BaseModel):
 
     hospital_id: UUID
 
-    doctor_id: UUID
+    doctor_id: UUID | None = None
 
-    department_id: UUID
+    department_id: UUID | None = None
 
-    slot_id: UUID
+    slot_id: UUID | None = None
 
-    patient_name: str
+    patient_name: str | None = None
 
-    patient_phone: str
+    patient_phone: str | None = None
 
     patient_email: EmailStr | None = None
 
     reason_for_visit: str | None = None
 
-    appointment_date: date
+    appointment_date: date | None = None
 
-    appointment_time: time
+    appointment_time: time | None = None
 
-    amount: Decimal
+    amount: Decimal | None = None
 
-    currency: str
+    currency: str = "INR"
 
     status: str
 
@@ -152,8 +137,8 @@ class BookingLinkResponse(BaseModel):
 
 class N8NBookingResponse(BaseModel):
     """
-    Response returned to n8n after successfully creating
-    a booking link.
+    Response returned to n8n after creating a
+    hospital-level booking link.
     """
 
     success: bool
@@ -162,14 +147,21 @@ class N8NBookingResponse(BaseModel):
 
     booking_url: str
 
+    booking_token: str
+
     expires_at: datetime
 
-    amount: Decimal
+    hospital_id: UUID
 
-    currency: str
+    hospital_name: str
+
+    source: str
+
+    status: str
 
 
 # Backward-compatible alias
+
 N8nBookingResponse = N8NBookingResponse
 
 
@@ -180,33 +172,41 @@ N8nBookingResponse = N8NBookingResponse
 class PublicBookingResponse(BaseModel):
     """
     Information displayed by the public Saral Booking page.
+
+    At the beginning, only hospital information is populated.
+    The patient fills the appointment information on the
+    booking page.
     """
 
     success: bool
 
     booking_link_id: str
 
+    booking_token: str
+
     hospital_id: UUID
 
-    doctor_id: UUID
+    hospital_name: str
 
-    department_id: UUID
+    doctor_id: UUID | None = None
 
-    patient_name: str
+    department_id: UUID | None = None
 
-    patient_phone: str
+    patient_name: str | None = None
+
+    patient_phone: str | None = None
 
     patient_email: EmailStr | None = None
 
     reason_for_visit: str | None = None
 
-    appointment_date: date
+    appointment_date: date | None = None
 
-    appointment_time: time
+    appointment_time: time | None = None
 
-    amount: Decimal
+    amount: Decimal | None = None
 
-    currency: str
+    currency: str = "INR"
 
     status: str
 
@@ -219,8 +219,8 @@ class PublicBookingResponse(BaseModel):
 
 class CreatePaymentOrderRequest(BaseModel):
     """
-    Request from the booking frontend to create a Razorpay
-    order.
+    Request from the booking frontend to create a
+    Razorpay order.
     """
 
     booking_token: str = Field(
@@ -325,29 +325,35 @@ class BookingDetails(BaseModel):
     """
     Common booking information used internally or returned
     by booking/payment APIs.
+
+    Appointment fields remain optional because the initial
+    booking link is created before the patient selects
+    a doctor, date and slot.
     """
 
     booking_link_id: str
 
     hospital_id: UUID
 
-    doctor_id: UUID
+    doctor_id: UUID | None = None
 
-    department_id: UUID
+    department_id: UUID | None = None
 
-    patient_name: str
+    patient_name: str | None = None
 
-    patient_phone: str
+    patient_phone: str | None = None
 
     patient_email: EmailStr | None = None
 
-    appointment_date: date
+    reason_for_visit: str | None = None
 
-    appointment_time: time
+    appointment_date: date | None = None
 
-    amount: Decimal
+    appointment_time: time | None = None
 
-    currency: str
+    amount: Decimal | None = None
+
+    currency: str = "INR"
 
     status: str
 
