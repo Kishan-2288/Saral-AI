@@ -23,6 +23,13 @@ app.add_middleware(
         "http://127.0.0.1:5174",
         "http://localhost:5175",
         "http://127.0.0.1:5175",
+
+
+        # Production
+        "https://saral.me",
+        "https://www.saral.me",
+        "https://admin.saral.me",
+        "https://receptionist.saral.me",
     ],
     allow_credentials=True,
     allow_methods=["*"],
