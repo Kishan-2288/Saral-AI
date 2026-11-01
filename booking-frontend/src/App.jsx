@@ -756,7 +756,7 @@ export default function App() {
 
         currency: order.currency || 'INR',
 
-        name: 'Saral',
+        name: 'Saral AI',
 
         description: `Appointment at ${
           booking?.hospital?.name || 'Hospital'
@@ -986,7 +986,7 @@ export default function App() {
 
         <header className="topbar">
           <div className="brand">
-            saral<span>.</span>
+            SARAL AI 
           </div>
 
           <div className="secure">

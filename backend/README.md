@@ -51,6 +51,8 @@ WhatsApp confirmation
 ## Endpoints
 
 ```text
+POST /api/v1/demo-requests/
+
 POST /api/v1/booking/n8n
 GET  /api/v1/booking/{booking_token}
 GET  /api/v1/booking/{booking_token}/slots
@@ -62,6 +64,10 @@ GET  /api/v1/payments/{payment_id}
 
 POST /api/v1/webhooks/razorpay
 ```
+
+`POST /api/v1/demo-requests/` stores a validated marketing lead and returns
+`{"success": true, "leadId": "..."}`. The `saral-web` Vercel deployment proxies
+the public form to this endpoint through its `BACKEND_URL` environment variable.
 
 ## n8n payload
 
@@ -132,6 +138,7 @@ Never expose `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET` or `N8N_WEBHOOK_SE
 ```bash
 pip install -r requirements.txt
 python -m uvicorn app.main:app --reload --port 8001
+.\.venv\Scripts\Activate.ps1
 ```
 
 Swagger:

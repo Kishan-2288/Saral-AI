@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+dist/
+coverage/
+reports/
+.DS_Store
+*.log
+.env*
+!.env.example
+next-env.d.ts
+*.tsbuildinfo
+# Never commit lead exports or PII dumps
+data/
+leads*.json
+.next-dev/

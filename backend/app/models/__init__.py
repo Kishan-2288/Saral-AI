@@ -13,9 +13,10 @@ from app.models.conversation_state import ConversationState
 from app.models.message import Message
 from app.models.audit_log import AuditLog
 from app.models.automation_log import AutomationLog
+from app.models.demo_request import DemoRequest
 
 __all__ = [
     "Organization", "Hospital", "Department", "Doctor", "DoctorSchedule",
     "AppointmentSlot", "Patient", "Appointment", "Payment", "BookingLink",
-    "Conversation", "ConversationState", "Message", "AuditLog", "AutomationLog"
+    "Conversation", "ConversationState", "Message", "AuditLog", "AutomationLog", "DemoRequest"
 ]

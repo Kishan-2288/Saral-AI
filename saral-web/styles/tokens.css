@@ -1,0 +1,63 @@
+/* Design tokens. Light is the default; dark applies via [data-theme="dark"] (set before paint by the inline theme script)
+   and via prefers-color-scheme when JS is unavailable.
+   AA NOTE: the spec's #0E9F6E reaches only 3.4:1 against white, so light mode uses #0A7F5A (5.0:1). Dark keeps #2DD4A0. */
+:root {
+  --bg: #f7fafc;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef3f7;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --border: #dbe3ea;
+  --primary: #0a7f5a;
+  --primary-hover: #086b4c;
+  --on-primary: #ffffff;
+  --primary-soft: rgba(10, 127, 90, 0.1);
+  --primary-ink: #087050; /* text on tinted surfaces: 5.3:1 on the soft tint */
+  --accent: #2563eb;
+  --handoff: #f59e0b;
+  --handoff-soft: rgba(245, 158, 11, 0.16);
+  --handoff-text: #92400e;
+  --focus: #0a7f5a;
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 12px 32px rgba(15, 23, 42, 0.06);
+
+  --space-section: clamp(96px, 14vw, 200px);
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 28px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 600ms;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0a0f1a;
+  --bg-elevated: #121a2b;
+  --surface: #121a2b;
+  --surface-2: #19223a;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #243049;
+  --primary: #2dd4a0;
+  --primary-hover: #5eead4;
+  --on-primary: #04130d;
+  --primary-soft: rgba(45, 212, 160, 0.12);
+  --primary-ink: #2dd4a0;
+  --accent: #60a5fa;
+  --handoff: #fbbf24;
+  --handoff-soft: rgba(251, 191, 36, 0.14);
+  --handoff-text: #fbbf24;
+  --focus: #5eead4;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0a0f1a; --bg-elevated: #121a2b; --surface: #121a2b; --surface-2: #19223a;
+    --text: #f1f5f9; --text-muted: #94a3b8; --border: #243049;
+    --primary: #2dd4a0; --primary-hover: #5eead4; --on-primary: #04130d; --primary-soft: rgba(45, 212, 160, 0.12); --primary-ink: #2dd4a0;
+    --accent: #60a5fa; --handoff: #fbbf24; --handoff-soft: rgba(251, 191, 36, 0.14); --handoff-text: #fbbf24;
+    --focus: #5eead4; color-scheme: dark;
+  }
+}
