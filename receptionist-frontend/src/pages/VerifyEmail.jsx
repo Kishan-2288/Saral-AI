@@ -20,7 +20,7 @@ export default function VerifyEmail() {
   return (
     <main className="login">
       <section className="verification">
-        <b>SARAL AI</b>
+        <div className="auth-brand"><span className="auth-brand-mark" aria-hidden="true">S</span><span>Saral AI</span></div>
         <h1>Verify your email</h1>
         {state.loading && <p>Verifying your account...</p>}
         {state.error && <small>{state.error}</small>}

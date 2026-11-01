@@ -23,7 +23,7 @@ export default function Login() {
   return (
     <main className="login">
       <form onSubmit={handleSubmit}>
-        <b>SARAL AI</b>
+        <div className="auth-brand"><span className="auth-brand-mark" aria-hidden="true">S</span><span>Saral AI</span></div>
         <h1>Receptionist Portal</h1>
         <p>Manage appointments, patients, and daily operations.</p>
 
