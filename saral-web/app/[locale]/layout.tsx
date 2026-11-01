@@ -38,7 +38,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <a className="skip-link" href="#main">{t.nav.skip}</a>
         <Providers>
           <Header locale={locale} t={t} />

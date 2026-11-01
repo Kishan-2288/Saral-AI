@@ -120,14 +120,10 @@ html[data-motion="off"] [data-reveal] { opacity: 1 !important; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-/* Logo variants swap with the theme (CSS only, no flash) */
-.logo-dark { display: none; }
-:root[data-theme="dark"] .logo-light { display: none; }
-:root[data-theme="dark"] .logo-dark { display: inline-block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .logo-light { display: none; }
-  :root:not([data-theme]) .logo-dark { display: inline-block; }
-}
+/* Brand mark and wordmark */
+.brand-logo { display: inline-flex; align-items: center; gap: 14px; color: var(--text); text-decoration: none; white-space: nowrap; }
+.brand-logo-mark { display: grid; width: var(--brand-size); height: var(--brand-size); flex: 0 0 var(--brand-size); place-items: center; border-radius: 9px; background: #fff; color: #0a0a0a; font-family: var(--font-display); font-size: calc(var(--brand-size) * 0.62); font-weight: 700; line-height: 1; }
+.brand-logo-name { font-family: var(--font-display); font-size: calc(var(--brand-size) * 0.73); font-weight: 700; letter-spacing: -0.055em; line-height: 1; }
 
 /* Segmented controls (theme, language) */
 .tt-group { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); }

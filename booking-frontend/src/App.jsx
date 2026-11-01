@@ -986,7 +986,8 @@ export default function App() {
 
         <header className="topbar">
           <div className="brand">
-            SARAL AI 
+            <span className="brand-mark" aria-hidden="true">S</span>
+            <span className="brand-name">Saral AI</span>
           </div>
 
           <div className="secure">

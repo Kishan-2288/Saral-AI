@@ -1,14 +1,13 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { localePath, type Locale } from "@/lib/i18n";
 
-/** SVG wordmark, light + dark variants swap with the theme via CSS (no JS, no flash). Replace files in /public/brand when a real logo exists. */
-export default function Logo({ locale, label, height = 28 }: { locale: Locale; label: string; height?: number }) {
+/** Compact brand mark and wordmark. */
+export default function Logo({ locale, label, height = 36 }: { locale: Locale; label: string; height?: number }) {
   return (
-    <Link href={localePath(locale, "/")} aria-label={label} className="inline-flex items-center" prefetch={false}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="logo-light" src="/brand/saral-logo-light.svg" alt="" height={height} width={Math.round(height * 1.835)} style={{ height }} />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="logo-dark" src="/brand/saral-logo-dark.svg" alt="" height={height} width={Math.round(height * 1.835)} style={{ height }} />
+    <Link href={localePath(locale, "/")} aria-label={label} className="brand-logo" style={{ "--brand-size": `${height}px` } as CSSProperties} prefetch={false}>
+      <span className="brand-logo-mark" aria-hidden="true">S</span>
+      <span className="brand-logo-name" aria-hidden="true">Saral AI</span>
     </Link>
   );
 }

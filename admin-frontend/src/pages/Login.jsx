@@ -23,7 +23,7 @@ export default function Login() {
   return (
     <main className="login">
       <form onSubmit={submit}>
-        <div className="brand">SARAL AI</div>
+        <div className="brand"><span className="brand-mark" aria-hidden="true">S</span><span>Saral AI</span></div>
         <p className="portal">Admin Console</p>
         <p className="login-copy">Manage enterprises, staff access, and platform performance.</p>
 

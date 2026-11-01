@@ -16,8 +16,9 @@ button { cursor: pointer; }
 .app-shell { min-height: 100vh; }
 .booking-page { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0 32px; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 42px; }
-.brand { font-family: Sora, sans-serif; font-size: 27px; font-weight: 700; letter-spacing: -1.5px; }
-.brand span { color: #777; }
+.brand { display: inline-flex; align-items: center; gap: 14px; font-family: Sora, sans-serif; }
+.brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid #e5e7eb; border-radius: 9px; background: #fff; color: #0a0a0a; font-size: 22px; font-weight: 700; line-height: 1; }
+.brand-name { color: #0a0a0a; font-size: 27px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
 .secure { font-size: 14px; color: #64748b; }
 
 .hero { padding: 44px 0 46px; max-width: 760px; }

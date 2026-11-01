@@ -10,7 +10,7 @@ const NAV_ITEMS = [
 export default function Sidebar({ page, setPage, hospital, onLogout }) {
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">SARAL AI</div>
+      <div className="sidebar-logo"><span className="sidebar-logo-mark" aria-hidden="true">S</span><span>Saral AI</span></div>
       <p className="sidebar-hospital">{hospital || 'Reception desk'}</p>
 
       <nav className="sidebar-menu">

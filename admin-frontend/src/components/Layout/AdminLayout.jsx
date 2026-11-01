@@ -9,7 +9,8 @@ export function AdminLayout({ children }) {
     <div className="shell">
       <aside className="sidebar">
         <NavLink className="sidebar-brand" to="/dashboard">
-          SARAL AI<span>ADMIN CONSOLE</span>
+          <span className="sidebar-brand-main"><span className="brand-mark" aria-hidden="true">S</span><span>Saral AI</span></span>
+          <span className="sidebar-brand-caption">ADMIN CONSOLE</span>
         </NavLink>
 
         <nav className="sidebar-nav">
